@@ -4,7 +4,9 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
+import { IconDotsVertical } from "@tabler/icons-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/Dropdown-menu'
 
 export const HoverCard = ({
   items,
@@ -52,9 +54,9 @@ export const HoverCard = ({
               />
             )}
           </AnimatePresence>
-          <Card className="rounded-2xl h-[200px] w-full overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20">
+          <Card className="rounded-2xl min-h-[140px] py-2 px-7 w-full overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20">
             <CardHeader>
-              <CardTitle className="text-zinc-100 font-bold tracking-wide px-1s">
+              <CardTitle className="text-zinc-100 font-bold tracking-wide px-1s leading-snug">
                 {item.title}
               </CardTitle>
               <CardDescription className="text-zinc-400 tracking-wide leading-relaxed text-sm">
@@ -64,6 +66,19 @@ export const HoverCard = ({
                 {item.teacherName}
               </CardDescription>
             </CardHeader>
+            <CardContent className="absolute -right-[10px] top-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <IconDotsVertical />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>Billing</DropdownMenuItem>
+                  <DropdownMenuItem>Team</DropdownMenuItem>
+                  <DropdownMenuItem>Subscription</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </CardContent>
           </Card>
         </Link>
       ))}

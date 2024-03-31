@@ -14,7 +14,7 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { IconPlus } from "@tabler/icons-react"
+import { IconBaselineDensityMedium, IconPlus  } from "@tabler/icons-react"
 import { NavAvatar } from "./Nav-avatar"
 
 const components: { title: string; href: string; description: string }[] = [
@@ -32,35 +32,66 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function Navbar() {
     return (
-        <NavigationMenu>
-            <NavigationMenuList>
-                <NavigationMenuItem >
-                    <NavigationMenuTrigger className="h-14">
-                        <IconPlus />
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="z-50">
-                        <ul className="grid w-[200px] flex-col gap-3 p-2">
-                            {components.map((component) => (
-                                <ListItem
-                                    key={component.title}
-                                    title={component.title}
-                                    href={component.href}
-                                >
-                                    {component?.description}
+        <nav>
+            <div className="cursor-pointer text-black hover:opacity-[0.1] dark:text-white">
+                <h2 className="scroll-m-20 p-[1.6rem] pb-2 text-xl font-semibold first:mt-0 ">
+                    GCETTS&apos;s Classrooms
+                </h2>
+            </div>
+            <NavigationMenu className="z-30">
+                <NavigationMenuList className="hidden sm:flex">
+                    <NavigationMenuItem>
+                        <NavigationMenuTrigger className="h-14">
+                            <IconPlus />
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                            <ul className="grid w-[200px] flex-col gap-3 p-2">
+                                {components.map((component) => (
+                                    <ListItem
+                                        key={component.title}
+                                        title={component.title}
+                                        href={component.href}
+                                    >
+                                        {component?.description}
+                                    </ListItem>
+                                ))}
+                            </ul>
+                        </NavigationMenuContent>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                        <Link href="/profile" legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                <NavAvatar />
+                            </NavigationMenuLink>
+                        </Link>
+                    </NavigationMenuItem>
+                </NavigationMenuList>
+
+                <NavigationMenuList className="flex sm:hidden">
+                    <NavigationMenuItem>
+                        <NavigationMenuTrigger className="h-14">
+                            <IconBaselineDensityMedium />
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent className="right-40">
+                            <ul className="grid w-[200px] flex-col gap-3 p-2">
+                                {components.map((component) => (
+                                    <ListItem
+                                        key={component.title}
+                                        title={component.title}
+                                        href={component.href}
+                                    >
+                                        {component?.description}
+                                    </ListItem>
+                                ))}
+                                <ListItem>
+                                    <NavAvatar />
                                 </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <Link href="/profile" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            <NavAvatar />
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-            </NavigationMenuList>
-        </NavigationMenu>
+                            </ul>
+                        </NavigationMenuContent>
+                    </NavigationMenuItem>
+                </NavigationMenuList>
+            </NavigationMenu>
+        </nav>
     )
 }
 
@@ -74,18 +105,24 @@ const ListItem = React.forwardRef<
                 <a
                     ref={ref}
                     className={cn(
-                        "block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                        "block select-none rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
                         className
                     )}
                     {...props}
                 >
-                    <div className="text-sm font-medium leading-none">{title}</div>
-                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        {children}
-                    </p>
+                    {typeof children == typeof "" ? (
+                        <>
+                            <div className="text-sm font-medium leading-none">{title}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                {children}
+                            </p>
+                        </>
+                    ) : children}
                 </a>
             </NavigationMenuLink>
         </li>
     )
 })
 ListItem.displayName = "ListItem"
+
+
