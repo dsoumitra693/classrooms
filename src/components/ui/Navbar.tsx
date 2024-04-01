@@ -14,7 +14,7 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { IconBaselineDensityMedium, IconPlus  } from "@tabler/icons-react"
+import { IconBaselineDensityMedium, IconPlus } from "@tabler/icons-react"
 import { NavAvatar } from "./Nav-avatar"
 
 const components: { title: string; href: string; description: string }[] = [
@@ -31,6 +31,8 @@ const components: { title: string; href: string; description: string }[] = [
 ]
 
 export function Navbar() {
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false)
+
     return (
         <nav>
             <div className="cursor-pointer text-black hover:opacity-[0.1] dark:text-white">
@@ -59,9 +61,14 @@ export function Navbar() {
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                        <Link href="/profile" legacyBehavior passHref>
+                        <Link href={isLoggedIn ? "/profile" : "/auth/login"} legacyBehavior passHref>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                <NavAvatar />
+                                {isLoggedIn ? <NavAvatar /> : (
+                                    <div className='h-[40px] flex justify-center items-center'>
+                                        <h4 className="scroll-m-20 text-sm font-semibold tracking-tight">
+                                            Login/SignUp
+                                        </h4>
+                                    </div>)}
                             </NavigationMenuLink>
                         </Link>
                     </NavigationMenuItem>
@@ -83,8 +90,13 @@ export function Navbar() {
                                         {component?.description}
                                     </ListItem>
                                 ))}
-                                <ListItem>
-                                    <NavAvatar />
+                                <ListItem href={isLoggedIn ? "/profile" : "/auth/login"}>
+                                    {isLoggedIn ? <NavAvatar /> : (
+                                        <div className='h-[40px] flex justify-center items-center'>
+                                            <h4 className="scroll-m-20 text-sm font-semibold tracking-tight">
+                                                Login/SignUp
+                                            </h4>
+                                        </div>)}
                                 </ListItem>
                             </ul>
                         </NavigationMenuContent>

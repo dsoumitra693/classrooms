@@ -7,6 +7,7 @@ import {
 import { Label, LabelInputContainer } from "@/components/ui/Lable";
 import { Input } from "@/components/ui/Input";
 import { BottomGradient } from "@/components/ui/BottomGradient";
+import Link from "next/link";
 
 function LoginForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -14,7 +15,7 @@ function LoginForm() {
     console.log("Form submitted");
   };
   return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <div className="max-w-md w-full mx-auto z-40 rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Welcome Back to Classroom
       </h2>
@@ -27,6 +28,9 @@ function LoginForm() {
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
           <Input id="password" placeholder="••••••••" type="password" />
+          <Link href="forgot" className="z-20 self-end cursor-pointer">
+            <h4 className="text-[13px]">Forgot password?</h4>
+          </Link>
         </LabelInputContainer>
 
         <button
@@ -36,7 +40,11 @@ function LoginForm() {
           Log in &rarr;
           <BottomGradient />
         </button>
-
+        <div className="p-[10px] relative justify-center">
+        <Link href="signup" className="z-20 self-center cursor-pointer">
+          <h4 className="text-[13px] text-center">Didn&apos;t have any accout? Create one.</h4>
+        </Link>
+        </div>
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 
         <div className="flex flex-col space-y-4">
