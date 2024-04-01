@@ -1,53 +1,148 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 import {
-  IconBrandGoogle,
+  IconBrandGoogle, IconEye, IconEyeClosed,
 } from "@tabler/icons-react";
 import { Label, LabelInputContainer } from "@/components/ui/Lable";
 import { Input } from "@/components/ui/Input";
 import { BottomGradient } from "@/components/ui/BottomGradient";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { BgGlow } from "@/components/ui/BgGlow";
 
 function SignupForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    universityRoll: "",
+    stream: "",
+    email: "",
+    password: "",
+    reenterPassword: "",
+  });
+  const [visible, setVisible] = React.useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
+    if (validateForm()) {
+      // Handle form submission logic here
+      console.log("Form submitted", formData);
+    } else {
+      setError("Please fill in all required fields.");
+    }
   };
+
+  const validateForm = () => {
+    // Perform form validation logic here
+    // Return true if the form is valid, otherwise return false
+    return (
+      formData.name &&
+      formData.universityRoll &&
+      formData.stream &&
+      formData.email &&
+      formData.password &&
+      formData.reenterPassword
+    );
+  };
+
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Welcome to Classroom
       </h2>
 
-      <form className="my-8" onSubmit={handleSubmit}>
+      <form className="py-2" onSubmit={handleSubmit}>
+        {error && <div className="text-red-500">{error}</div>}
+
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label htmlFor="Name">Name</Label>
-            <Input id="Name" placeholder="Soumitra Das" type="text" />
+            <Label htmlFor="name">Name</Label>
+            <Input
+              id="name"
+              placeholder="Soumitra Das"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+            />
           </LabelInputContainer>
           <LabelInputContainer>
-            <Label htmlFor="UnivRoll">Unversity Roll</Label>
-            <Input id="UnivRoll" placeholder="11000XXXXXX" type="text" />
+            <Label htmlFor="universityRoll">University Roll</Label>
+            <Input
+              id="universityRoll"
+              placeholder="11000XXXXXX"
+              type="text"
+              value={formData.universityRoll}
+              onChange={handleChange}
+            />
           </LabelInputContainer>
           <LabelInputContainer>
             <Label htmlFor="stream">Stream</Label>
-            <Input id="stream" placeholder="IT" type="text" />
+            <BgGlow>
+              <Select>
+                <SelectTrigger className="w-[130px] h-[2.625rem]">
+                  <SelectValue placeholder="Select Stream" className="placeholder:text-neutral-400 dark:placeholder-text-neutral-600"/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="APM">Apereal Product Mangement</SelectItem>
+                    <SelectItem value="CSE">Computer Science & Engineering</SelectItem>
+                    <SelectItem value="IT">Information Technology</SelectItem>
+                    <SelectItem value="TT">Textile Technology</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </BgGlow>
           </LabelInputContainer>
         </div>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
-          <Input id="email" placeholder="youraddress@gmail.com" type="email" />
+          <Input
+            id="email"
+            placeholder="youraddress@gmail.com"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="password" />
+          <div className="flex-1 flex items-center justify-between ">
+            <Input
+              id="password"
+              placeholder="••••••••"
+              type={visible ? "text" : "password"}
+              value={formData.password}
+              onChange={handleChange}
+              className="w-[376px]"
+            />
+            <button
+              type="button"
+              className="ml-2 focus:outline-none w-[100px] relative z-20 right-[40px]"
+              onClick={() => setVisible(!visible)}
+            >
+              {visible ? (
+                <IconEyeClosed className="h-5 w-5 text-gray-400" />
+              ) : (
+                <IconEye className="h-5 w-5 text-gray-400" />
+              )}
+            </button>
+          </div>
         </LabelInputContainer>
         <LabelInputContainer className="mb-8">
-          <Label htmlFor="rpassword">Re-enter password</Label>
+          <Label htmlFor="reenterPassword">Re-enter password</Label>
           <Input
-            id="rpassword"
+            id="reenterPassword"
             placeholder="••••••••"
-            type="rpassword"
+            type={visible ? "text" : "password"}
+            value={formData.reenterPassword}
+            onChange={handleChange}
           />
         </LabelInputContainer>
 
@@ -77,5 +172,6 @@ function SignupForm() {
     </div>
   );
 }
+
 
 export default SignupForm

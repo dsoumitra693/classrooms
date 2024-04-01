@@ -1,5 +1,5 @@
 import { HoverCard } from "@/components/ui/Room";
-import { projects } from "../../data/rooms";
+import { classes } from "../../data/rooms";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
           Your classes
         </h2>
         <div className="max-w-6xl mx-auto px-8">
-          <HoverCard items={projects} />
+          <HoverCard items={classes} />
         </div>
       </main>
     </>

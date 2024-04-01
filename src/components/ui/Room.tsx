@@ -15,7 +15,7 @@ export const HoverCard = ({
   items: {
     title: string;
     description: string;
-    link: string;
+    id: string;
     teacherName: string
   }[];
   className?: string;
@@ -31,8 +31,8 @@ export const HoverCard = ({
     >
       {items.map((item, idx) => (
         <Link
-          href={item?.link}
-          key={item?.link}
+          href={`room/${item?.id}`}
+          key={item?.id}
           className="relative group  block p-2 h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
