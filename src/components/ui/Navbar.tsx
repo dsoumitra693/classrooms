@@ -35,10 +35,12 @@ export function Navbar() {
 
     return (
         <nav>
-            <div className="cursor-pointer text-black hover:opacity-[0.1] dark:text-white">
+            <div className="cursor-pointer text-black hover:opacity-[0.1] dark:text-white z-40">
+                <Link href="/" legacyBehavior passHref>
                 <h2 className="scroll-m-20 p-[1.6rem] pb-2 text-xl font-semibold first:mt-0 ">
                     GCETTS&apos;s Classrooms
                 </h2>
+                </Link>
             </div>
             <NavigationMenu className="z-30">
                 <NavigationMenuList className="hidden sm:flex">

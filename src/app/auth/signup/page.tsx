@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/Input";
 import { BottomGradient } from "@/components/ui/BottomGradient";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BgGlow } from "@/components/ui/BgGlow";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 function SignupForm() {
   const [formData, setFormData] = useState({
@@ -19,10 +20,16 @@ function SignupForm() {
     password: "",
     reenterPassword: "",
   });
+
   const [visible, setVisible] = React.useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  React.useEffect(() => {
+    validateForm() ? setError("") : null
+    console.log(formData)
+  }, [formData])
+
+  const handleChange = (e: { target: { id: string; value: string } }) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [e.target.id]: e.target.value,
@@ -48,7 +55,7 @@ function SignupForm() {
       formData.stream &&
       formData.email &&
       formData.password &&
-      formData.reenterPassword
+      (formData.password === formData.reenterPassword)
     );
   };
 
@@ -85,11 +92,11 @@ function SignupForm() {
           <LabelInputContainer>
             <Label htmlFor="stream">Stream</Label>
             <BgGlow>
-              <Select>
-                <SelectTrigger className="w-[130px] h-[2.625rem]">
-                  <SelectValue placeholder="Select Stream" className="placeholder:text-neutral-400 dark:placeholder-text-neutral-600"/>
+              <Select onValueChange={(value) => handleChange({ target: { id: "stream", value } })}>
+                <SelectTrigger className="w-full md:w-[130px] h-[2.625rem] bg-white">
+                  <SelectValue placeholder="Select Stream" className="placeholder:text-neutral-400 dark:placeholder-text-neutral-600" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent >
                   <SelectGroup>
                     <SelectItem value="APM">Apereal Product Mangement</SelectItem>
                     <SelectItem value="CSE">Computer Science & Engineering</SelectItem>
@@ -113,37 +120,14 @@ function SignupForm() {
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <div className="flex-1 flex items-center justify-between ">
-            <Input
-              id="password"
-              placeholder="••••••••"
-              type={visible ? "text" : "password"}
-              value={formData.password}
-              onChange={handleChange}
-              className="w-[376px]"
-            />
-            <button
-              type="button"
-              className="ml-2 focus:outline-none w-[100px] relative z-20 right-[40px]"
-              onClick={() => setVisible(!visible)}
-            >
-              {visible ? (
-                <IconEyeClosed className="h-5 w-5 text-gray-400" />
-              ) : (
-                <IconEye className="h-5 w-5 text-gray-400" />
-              )}
-            </button>
-          </div>
+          <PasswordInput handleChange={handleChange} value={formData.password} />
         </LabelInputContainer>
         <LabelInputContainer className="mb-8">
           <Label htmlFor="reenterPassword">Re-enter password</Label>
-          <Input
-            id="reenterPassword"
-            placeholder="••••••••"
-            type={visible ? "text" : "password"}
+          <PasswordInput
             value={formData.reenterPassword}
-            onChange={handleChange}
-          />
+            handleChange={handleChange}
+            id="reenterPassword" />
         </LabelInputContainer>
 
         <button
@@ -155,19 +139,6 @@ function SignupForm() {
         </button>
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
-
-        <div className="flex flex-col space-y-4">
-          <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            type="submit"
-          >
-            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-              Google
-            </span>
-            <BottomGradient />
-          </button>
-        </div>
       </form>
     </div>
   );

@@ -33,7 +33,7 @@ const BgGlow:React.FC<BgGlowProps> = ({ children}, ref) => {
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setVisible(true)}
             onMouseLeave={() => setVisible(false)}
-            className="p-[2px] z-10 rounded-lg transition duration-300 group/input"
+            className="p-[2px] w-full z-10 rounded-lg transition duration-300 group/input"
         >
             {children}
         </motion.div>

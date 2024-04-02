@@ -1,7 +1,6 @@
 // Input component extends from shadcnui - https://ui.shadcn.com/docs/components/input
 "use client";
 import * as React from "react";
-import { useMotionTemplate, useMotionValue, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { BgGlow } from "./BgGlow";
 
