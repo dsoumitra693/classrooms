@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useEffect, useState ,forwardRef} from "react"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
@@ -15,53 +15,70 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { IconBaselineDensityMedium, IconPlus } from "@tabler/icons-react"
-import { NavAvatar } from "./Nav-avatar"
+import { NavAvatar } from "@/components/ui/Nav-avatar"
+import { AddNewRoom } from "@/components/ui/AddNewRoomDialogue"
+import { JoinNewRoom } from "@/components/ui/JoinNewRoomDialogue"
 
-const components: { title: string; href: string; description: string }[] = [
-    {
-        title: "Create a new classroom",
-        href: "/room/new/create",
-        description: ""
-    },
-    {
-        title: "Join a new classroom",
-        href: "/room/new/join",
-        description: ""
-    },
-]
+
 
 export function Navbar() {
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(1)
+    const [isDialogOpen, setIsDialogOpen] = useState([false, false]);
+
+    // Function to open the Dialog
+    const openDialog = (idx: number) => setIsDialogOpen([idx == 0, idx == 1]);
+
+    // Function to close the Dialog
+    const closeDialog = (idx: number) => setIsDialogOpen(prev=>[prev[1-idx], !prev[idx]]);
+
+    const components: { title: string; description: string, onClick: () => void }[] = [
+        {
+            title: "Create a new classroom",
+            description: "",
+            onClick: () => { },
+        },
+        {
+            title: "Join a new classroom",
+            description: "",
+            onClick: () => { }
+        },
+    ]
+
+    useEffect(() => {
+        console.log(isDialogOpen)
+    }, [isDialogOpen])
+
+
 
     return (
         <nav>
             <div className="cursor-pointer text-black hover:opacity-[0.1] dark:text-white z-40">
                 <Link href="/" legacyBehavior passHref>
-                <h2 className="scroll-m-20 p-[1.6rem] pb-2 text-xl font-semibold first:mt-0 ">
-                    GCETTS&apos;s Classrooms
-                </h2>
+                    <h2 className="scroll-m-20 p-[1.6rem] pb-2 text-xl font-semibold first:mt-0 ">
+                        GCETTS&apos;s Classrooms
+                    </h2>
                 </Link>
             </div>
             <NavigationMenu className="z-30">
                 <NavigationMenuList className="hidden sm:flex">
-                    <NavigationMenuItem>
+                    {isLoggedIn ? <NavigationMenuItem>
                         <NavigationMenuTrigger className="h-14">
                             <IconPlus />
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <ul className="grid w-[200px] flex-col gap-3 p-2">
-                                {components.map((component) => (
+                                {components.map((component, idx) => (
                                     <ListItem
                                         key={component.title}
                                         title={component.title}
-                                        href={component.href}
+                                        onClick={() => openDialog(idx)}
                                     >
                                         {component?.description}
                                     </ListItem>
                                 ))}
                             </ul>
                         </NavigationMenuContent>
-                    </NavigationMenuItem>
+                    </NavigationMenuItem> : null}
                     <NavigationMenuItem>
                         <Link href={isLoggedIn ? "/profile" : "/auth/login"} legacyBehavior passHref>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -83,15 +100,15 @@ export function Navbar() {
                         </NavigationMenuTrigger>
                         <NavigationMenuContent className="right-40">
                             <ul className="grid w-[200px] flex-col gap-3 p-2">
-                                {components.map((component) => (
+                                {isLoggedIn ? components.map((component, idx) => (
                                     <ListItem
                                         key={component.title}
                                         title={component.title}
-                                        href={component.href}
+                                        onClick={() => openDialog(idx)}
                                     >
                                         {component?.description}
                                     </ListItem>
-                                ))}
+                                )) : null}
                                 <ListItem href={isLoggedIn ? "/profile" : "/auth/login"}>
                                     {isLoggedIn ? <NavAvatar /> : (
                                         <div className='h-[40px] flex justify-center items-center'>
@@ -102,6 +119,8 @@ export function Navbar() {
                                 </ListItem>
                             </ul>
                         </NavigationMenuContent>
+                        <AddNewRoom open={isDialogOpen[0]} onOpenChange={() => closeDialog(0)} />
+                        <JoinNewRoom open={isDialogOpen[1]} onOpenChange={() => closeDialog(1)} />
                     </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>
@@ -109,7 +128,7 @@ export function Navbar() {
     )
 }
 
-const ListItem = React.forwardRef<
+const ListItem = forwardRef<
     React.ElementRef<"a">,
     React.ComponentPropsWithoutRef<"a">
 >(({ className, title, children, ...props }, ref) => {
@@ -117,7 +136,6 @@ const ListItem = React.forwardRef<
         <li>
             <NavigationMenuLink asChild>
                 <a
-                    ref={ref}
                     className={cn(
                         "block select-none rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
                         className
